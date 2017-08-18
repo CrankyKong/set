@@ -10,7 +10,8 @@ var numbers = [1, 2, 3];
 function main(){
     createDeck();
     //console.log(deck.length);
-    shuffleArray(deck);
+    /*****ShuffleArray commented out for testing check Set *******/
+    //shuffleArray(deck);
     for(i=0;i<12;i++){
         board.push(deck[i]);
     }
@@ -46,7 +47,8 @@ function main(){
     }
 }
    
-function card(color, shape, number, fill){
+var Card = function (color, shape, number, fill){
+    "use strict"
     this.color = colors[color];
     this.shape = shapes[shape];
     this.number = numbers[number];
@@ -61,7 +63,7 @@ function createDeck(){
         for(j=0; j<3; j++){
             for(k=0; k<3; k++){
                 for(l=0; l<3; l++){
-                    var card2 = new card(i,j,k,l);
+                    var card2 = new Card(i,j,k,l);
                     deck.push(card2);
                 }
             }
@@ -119,21 +121,30 @@ function select(ele){
     }
     else if(selected.length < 3){
         ele.className += "selected"; 
-        
-        var color1 = ele.dataset.color;
-        var shape1 = ele.dataset.shape;
-        var number1 = ele.dataset.number;
-        var fill1 = ele.dataset.fill;  
-        // var color1 = ele.getAttribute("data-color"); 
-        // var shape1 = ele.getAttribute("data-shape");
-        // var number1 = ele.getAttribute("data-number");
-        // var fill1 = ele.getAttribute("data-fill");
-        console.log(typeof color1);
-        console.log(color1, shape1, number1, fill1);
-        console.log(ele.dataset.color, ele.dataset.shape, ele.dataset.number, ele.dataset.fill);
-        var selectedCard = new card(ele.dataset.color, ele.dataset.shape, ele.dataset.number, ele.dataset.fill);
+        var selectedCard = new Card(colors.indexOf(ele.dataset.color), shapes.indexOf(ele.dataset.shape), numbers.indexOf(ele.dataset.number), fills.indexOf(ele.dataset.fill));
         console.log(selectedCard);
         selected.push(selectedCard);
         console.log(selected);
     }
+}
+
+function dealCards(spots){
+    console.log(spots);
+}
+
+function checkSelectedSet(){
+    if(checkSet(selected[0], selected[1], selected[2])){
+        console.log("ITS A SET");
+        var spots = [];
+        var selCards = document.getElementsByClassName('selected');
+        for(i = 0; i < selCards.length; i++){
+            spots.push(selCards[i].id);
+        }
+        dealCards(spots);
+    }
+    else{
+        console.log("NOT A SET!");
+    }
+    selected = [];
+    
 }
